@@ -1,5 +1,6 @@
 # pprz-py-plotter
 
+Old repo: https://github.com/Swarm-Systems-Lab/pprz-py-plotter
 New version of Paparazzi's logplotter utility, focused around NumPy.
 
 ![GUI-Screenshot](https://github.com/Pelochus/pprz-py-plotter/blob/main/img/screenshot.png)
