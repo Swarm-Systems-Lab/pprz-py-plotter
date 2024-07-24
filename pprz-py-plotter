@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+
+"""
+pprz-py-plotter - Plotting Paparazzi log and data files with Python, NumPy and Matplotlib
+
+Recommended to read the provided pprzlogutils library documentation for more information.
+
+Author: Pelochus
+Date: July 2024
+"""
+
+import sys
+import os
+
+import pprzlogutils.pyplottergui as ui
+import pprzlogutils.logparser as lp
+
+from PyQt5.QtWidgets import (
+    QApplication,
+    QFileDialog,
+    QMessageBox,
+)
+
+# Constants
+ID_LIST = []
+
+def start_gui():
+    app = QApplication(sys.argv)
+    folder_path = QFileDialog.getExistingDirectory(None, 
+                  "Select a folder with one .log and one .data", "Recommended to use the ./logs folder")
+    
+    if folder_path:
+        # Take the first .log file and .data file from the folder
+        files = os.listdir(folder_path)
+        log_file = None
+        data_file = None
+
+        for file in files:
+            if file.endswith('.log') and not log_file:
+                log_file = open(os.path.join(folder_path, file), 'r', encoding='utf-8')
+            elif file.endswith('.data') and not data_file:
+                data_file = open(os.path.join(folder_path, file), 'r', encoding='utf-8')
+            elif log_file and data_file:
+                break # Break early if already have one data and one log file
+        
+        ex = ui.pyplottergui(log_file, data_file)
+        sys.exit(app.exec_())
+    else:
+        QMessageBox.warning(None, 'Warning!', 'No folder selected.\nClosing application...')
+        sys.exit()
+
+if __name__ == '__main__':
+    # Previous comprobations to run the GUI
+    os.makedirs(lp.OUTPUT_DIR, exist_ok=True)
+    os.makedirs(lp.TMP_DIR, exist_ok=True)
+    
+    start_gui()
