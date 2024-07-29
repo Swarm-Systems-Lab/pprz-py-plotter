@@ -294,12 +294,19 @@ class MplCanvas(FigureCanvas):
 
     # Plot a single variable
     def plot_var(self, id, message, var):
-        if not self.points:
-            self.axes.plot(lp.convert_var_to_numpy(id, message, var), label=message + ' - ' + var)
-        else:
-            self.axes.plot(lp.convert_var_to_numpy(id, message, var), 'o', label=message + ' - ' + var)
+        v = lp.convert_var_to_numpy(id, message, var)
+        
+        if len(var) == 1: # If var not an array, x axis is time
+            if not self.points:
+                self.axes.plot(v, label=message + ' - ' + var)
+            else:
+                self.axes.plot(v, 'o', label=message + ' - ' + var)
+        else: # If var is an array, x axis is the array index
+            if not self.points:
+                self.axes.plot(range(len(v)), v, label=message + ' - ' + var)
+            else:
+                self.axes.plot(range(len(v)), v, 'o', label=message + ' - ' + var)
 
-    # TODO: Add button to show line (like right now) or only points
     # Plot every variable that is checked
     def plot_checked(self, id, checkboxes):
         for message in checkboxes.keys():
