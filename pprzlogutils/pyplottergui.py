@@ -102,11 +102,18 @@ class pyplottergui(QMainWindow):
         clearButton.setToolTip('Clear all checkboxes (F4)')
         clearButton.clicked.connect(lambda: self.clear_checkboxes())
 
+        # Add clear all checks button
+        pointsButton = QPushButton('Points/Lines', self)
+        pointsButton.setShortcut(QKeySequence(Qt.Key_F3))
+        pointsButton.setToolTip('Select between points or lines plots (F3)')
+        pointsButton.clicked.connect(lambda: self.points_lines())
+
         # Add to layout
         buttonLayout = QHBoxLayout()
         buttonLayout.addStretch(1)
         buttonLayout.addWidget(refreshButton)
         buttonLayout.addWidget(clearButton)
+        buttonLayout.addWidget(pointsButton)
         layout.addLayout(buttonLayout)
 
         self.show()
@@ -215,8 +222,8 @@ class pyplottergui(QMainWindow):
             for msg_name in lp.DATA_DICT[id].keys():
                 for submenu in self.menubar.actions():
                     if submenu.text() == 'Messages':
-                        for action in submenu.menu().actions():
-                            for subaction in action.menu().actions():
+                        for action in submenu.menu().actions(): # A-C, D-F submenus
+                            for subaction in action.menu().actions(): # Messages names submenu
                                 if isinstance(subaction, QAction):
                                     if subaction.text() == msg_name:
                                         font = subaction.font()
@@ -247,6 +254,12 @@ class pyplottergui(QMainWindow):
                                 checkbox.setChecked(False)
         self.update()
 
+    def points_lines(self):
+        if self.canvas.points:
+            self.canvas.points = False
+        else:
+            self.canvas.points = True
+
 #####################################################################
 #####################################################################
 # Matplotlib section
@@ -264,6 +277,7 @@ class MplCanvas(FigureCanvas):
     def __init__(self, parent=None, width=16, height=9, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
+        self.points = False
 
         super().__init__(fig)
         self.setParent(parent)
@@ -280,7 +294,10 @@ class MplCanvas(FigureCanvas):
 
     # Plot a single variable
     def plot_var(self, id, message, var):
-        self.axes.plot(lp.convert_var_to_numpy(id, message, var), label=message + ' - ' + var)
+        if not self.points:
+            self.axes.plot(lp.convert_var_to_numpy(id, message, var), label=message + ' - ' + var)
+        else:
+            self.axes.plot(lp.convert_var_to_numpy(id, message, var), 'o', label=message + ' - ' + var)
 
     # TODO: Add button to show line (like right now) or only points
     # Plot every variable that is checked
