@@ -21,6 +21,15 @@ Run (GUI):
 ./pprz-py-plotter
 ```
 
+Typical workflow will be as follows:
+
+- Open pprz-py-plotter
+- Select one folder which contains a `.log` file and a `.data` file. If there is more than one it will take the very first 2
+- The program will parse for telemetry and datalink messages 
+- Inside the program select which ID do you want to see data for
+- Select which variables do you want displayed with checkboxes. This is a little bit cumbersome to do, but works.
+- Refresh the plot and see the data
+
 Run (CLI):
 
 ```bash
