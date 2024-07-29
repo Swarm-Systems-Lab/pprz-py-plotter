@@ -165,7 +165,15 @@ def convert_message_to_numpy(id, message):
 def convert_var_to_numpy(id, message, var):
     array = []
     for i in range(len(DATA_DICT[id][message])):
-        array.append(float(getattr(DATA_DICT[id][message][i], var)))
+        attr = getattr(DATA_DICT[id][message][i], var) # Get the var
+        
+        v = None 
+        if isinstance(attr, float):
+            v = float(attr)
+        else:
+            v = [float(x) for x in attr.split(',')] # If string, split attr by commas        
+        
+        array.append(v) # Append to the array
 
     nparray = numpy.array(array)
 

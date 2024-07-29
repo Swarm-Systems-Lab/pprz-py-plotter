@@ -16,7 +16,8 @@ import os
 import pprzlogutils.logparser as lp
 
 # Constants
-UAV_ID = 204 # For the default log/data files
+UAV_ID = 204 # Only ID in the sample log/data files
+MESSAGE = "GVF"
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="pprz-py-plotter")
@@ -46,4 +47,4 @@ if __name__ == '__main__':
     # Convert datafile to numpy arrays
     with open(args.datafile, 'r', encoding='utf-8') as datafile:
         lp.parse_datafile(datafile)
-        lp.convert_message_to_numpy(UAV_ID, 'INS')
+        lp.convert_message_to_numpy(UAV_ID, MESSAGE)
