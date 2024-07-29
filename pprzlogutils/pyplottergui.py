@@ -253,12 +253,15 @@ class pyplottergui(QMainWindow):
                             if isinstance(checkbox, QAction):
                                 checkbox.setChecked(False)
         self.update()
+        self.canvas.refresh_plot(self.current_id, self.checkboxes)
 
     def points_lines(self):
         if self.canvas.points:
             self.canvas.points = False
         else:
             self.canvas.points = True
+
+        self.canvas.refresh_plot(self.current_id, self.checkboxes)
 
 #####################################################################
 #####################################################################
