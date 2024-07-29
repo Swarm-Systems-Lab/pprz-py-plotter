@@ -126,7 +126,7 @@ def parse_datafile(datafile, verbose=False):
         # Create the inner array for the inner dict
         if name not in DATA_DICT[id]:
             DATA_DICT[id][name] = []
-         
+        
         # Save using the id and name. Previously check if name is saved (if it's a telemetry message)
         if name in MESSAGES_TYPES:
             linedata = MESSAGES_TYPES[name](timestamp, *data)

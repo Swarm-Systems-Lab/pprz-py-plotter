@@ -211,6 +211,18 @@ class pyplottergui(QMainWindow):
         if idcheck.isChecked():
             self.current_id = id
             print("Current ID selected:", self.current_id)
+            
+            for msg_name in lp.DATA_DICT[id].keys():
+                for submenu in self.menubar.actions():
+                    if submenu.text() == 'Messages':
+                        for action in submenu.menu().actions():
+                            for subaction in action.menu().actions():
+                                if isinstance(subaction, QAction):
+                                    if subaction.text() == msg_name:
+                                        font = subaction.font()
+                                        font.setUnderline(True)
+                                        subaction.setFont(font)
+            self.update()
         else:
             pass
 
@@ -220,7 +232,6 @@ class pyplottergui(QMainWindow):
         else:
             self.checkboxes[message][var] = False
 
-    # TODO: Still broken
     def clear_checkboxes(self):
         for message in self.checkboxes.keys():
             for var in self.checkboxes[message]:
@@ -229,9 +240,12 @@ class pyplottergui(QMainWindow):
         # Clear checkboxes in the Messages menu
         for action in self.menubar.actions():
             if action.text() == 'Messages':
-                for submenu in action.menu().actions():
-                    if isinstance(submenu, QAction):
-                        submenu.setChecked(False)
+                for submenu in action.menu().actions(): # A-C, D-F... submenus
+                    for subaction in submenu.menu().actions(): # Messages names submenu
+                        for checkbox in subaction.menu().actions(): # Actual checkbox
+                            if isinstance(checkbox, QAction):
+                                checkbox.setChecked(False)
+        self.update()
 
 #####################################################################
 #####################################################################
@@ -268,6 +282,7 @@ class MplCanvas(FigureCanvas):
     def plot_var(self, id, message, var):
         self.axes.plot(lp.convert_var_to_numpy(id, message, var), label=message + ' - ' + var)
 
+    # TODO: Add button to show line (like right now) or only points
     # Plot every variable that is checked
     def plot_checked(self, id, checkboxes):
         for message in checkboxes.keys():
