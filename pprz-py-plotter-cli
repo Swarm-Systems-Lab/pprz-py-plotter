@@ -47,4 +47,5 @@ if __name__ == '__main__':
     # Convert datafile to numpy arrays
     with open(args.datafile, 'r', encoding='utf-8') as datafile:
         lp.parse_datafile(datafile)
+        print("Using UAV_ID: %d, and MESSAGE: %s" % (UAV_ID, MESSAGE))
         lp.convert_message_to_numpy(UAV_ID, MESSAGE)

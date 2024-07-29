@@ -301,7 +301,7 @@ class MplCanvas(FigureCanvas):
                 self.axes.plot(v, label=message + ' - ' + var)
             else:
                 self.axes.plot(v, 'o', label=message + ' - ' + var)
-        else: # If var is an array, x axis is the array index
+        else: # If var is an array, x axis is the array index # TODO: Fix or remove
             if not self.points:
                 self.axes.plot(range(len(v)), v, label=message + ' - ' + var)
             else:
