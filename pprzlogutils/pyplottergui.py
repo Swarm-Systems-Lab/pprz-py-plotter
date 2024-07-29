@@ -219,13 +219,19 @@ class pyplottergui(QMainWindow):
             self.checkboxes[message][var] = True
         else:
             self.checkboxes[message][var] = False
-            pass
 
-    # TODO: Do properly, GUIs' checkboxes are still checked, only self.checkboxes is cleared
+    # TODO: Still broken
     def clear_checkboxes(self):
         for message in self.checkboxes.keys():
             for var in self.checkboxes[message]:
                 self.checkboxes[message][var] = False
+
+        # Clear checkboxes in the Messages menu
+        for action in self.menubar.actions():
+            if action.text() == 'Messages':
+                for submenu in action.menu().actions():
+                    if isinstance(submenu, QAction):
+                        submenu.setChecked(False)
 
 #####################################################################
 #####################################################################

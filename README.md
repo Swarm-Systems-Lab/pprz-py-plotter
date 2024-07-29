@@ -58,6 +58,7 @@ output
 Where every file is a variable inside the message, plus the `TIMESTAMP` variable extracted from the `.data` file.
 
 ## Repo structure
+
 This repository directory structure is as follows:
 
 - `ìmg`: Contains the logo and image files
