@@ -15,7 +15,9 @@ from PyQt5.QtGui import QIcon, QKeySequence
 from PyQt5.QtWidgets import (
     QAction,
     QActionGroup,
+    QComboBox,
     QHBoxLayout,
+    QLineEdit,
     QMainWindow,
     QPushButton,
     QVBoxLayout,
@@ -90,11 +92,17 @@ class pyplottergui(QMainWindow):
         self.canvas = MplCanvas(self, width=16, height=10, dpi=100)
         layout.addWidget(self.canvas)
 
-        # Add refresh plot button
-        refreshButton = QPushButton('Refresh Plot', self)
-        refreshButton.setShortcut(QKeySequence(Qt.Key_F5))
-        refreshButton.setToolTip('Refresh the plot (F5)')
-        refreshButton.clicked.connect(lambda: self.canvas.refresh_plot(self.current_id, self.checkboxes))
+        # Add 2D position plot
+        twoDButton = QPushButton('2D Positions Plot', self)
+        twoDButton.setShortcut(QKeySequence(Qt.Key_F2))
+        twoDButton.setToolTip('Plot 2D positions (F2)')
+        twoDButton.clicked.connect(lambda: self.canvas.dimensional_plot(2, self.current_id))
+
+        # Add 3D position plot
+        threeDButton = QPushButton('3D Positions Plot', self)
+        threeDButton.setShortcut(QKeySequence(Qt.Key_F3))
+        threeDButton.setToolTip('Plot 3D Positions (F3)')
+        threeDButton.clicked.connect(lambda: self.canvas.dimensional_plot(3, self.current_id))
 
         # Add clear all checks button
         clearButton = QPushButton('Clear Checkboxes', self)
@@ -102,17 +110,25 @@ class pyplottergui(QMainWindow):
         clearButton.setToolTip('Clear all checkboxes (F4)')
         clearButton.clicked.connect(lambda: self.clear_checkboxes())
 
+        # Add refresh plot button
+        refreshButton = QPushButton('Refresh Plot', self)
+        refreshButton.setShortcut(QKeySequence(Qt.Key_F5))
+        refreshButton.setToolTip('Refresh the plot (F5)')
+        refreshButton.clicked.connect(lambda: self.canvas.refresh_plot(self.current_id, self.checkboxes))
+
         # Add clear all checks button
         pointsButton = QPushButton('Points/Lines', self)
-        pointsButton.setShortcut(QKeySequence(Qt.Key_F3))
-        pointsButton.setToolTip('Select between points or lines plots (F3)')
+        pointsButton.setShortcut(QKeySequence(Qt.Key_F6))
+        pointsButton.setToolTip('Select between points or lines plots (F6)')
         pointsButton.clicked.connect(lambda: self.points_lines())
 
         # Add to layout
         buttonLayout = QHBoxLayout()
+        buttonLayout.addWidget(twoDButton)
+        buttonLayout.addWidget(threeDButton)
         buttonLayout.addStretch(1)
-        buttonLayout.addWidget(refreshButton)
         buttonLayout.addWidget(clearButton)
+        buttonLayout.addWidget(refreshButton)
         buttonLayout.addWidget(pointsButton)
         layout.addLayout(buttonLayout)
 
@@ -249,7 +265,7 @@ class pyplottergui(QMainWindow):
             for msg_name in lp.DATA_DICT[id].keys():
                 for submenu in self.menubar.actions():
                     if submenu.text() == 'Messages':
-                        for action in submenu.menu().actions(): # A-C, D-F submenus
+                        for action in submenu.menu().actions(): # A-B, C-D... submenus
                             for subaction in action.menu().actions(): # Messages names submenu
                                 if isinstance(subaction, QAction):
                                     if subaction.text() == msg_name:
@@ -274,7 +290,7 @@ class pyplottergui(QMainWindow):
         # Clear checkboxes in the Messages menu
         for action in self.menubar.actions():
             if action.text() == 'Messages':
-                for submenu in action.menu().actions(): # A-C, D-F... submenus
+                for submenu in action.menu().actions(): # A-B, C-D... submenus
                     for subaction in submenu.menu().actions(): # Messages names submenu
                         for checkbox in subaction.menu().actions(): # Actual checkbox
                             if isinstance(checkbox, QAction):
@@ -336,9 +352,50 @@ class MplCanvas(FigureCanvas):
                 if checkboxes[message][var]:
                     self.plot_var(id, message, var)
 
+    # Plot positions
+    def dimensional_plot(self, dim, id):
+        ordered_keys = sorted(lp.DATA_DICT[id].keys(), key=str.lower) # Alphabetical order
+        searchBox = QLineEdit(self)
+        searchBox.setPlaceholderText("Search for message...")
+        message = searchBox.textChanged.connect(lambda text: self.search_messages(text, ordered_keys))
+
+        varx = self.select_var(id, message, 'x')
+        vary = self.select_var(id, message, 'y')
+
+        if dim == 2:
+            self.axes.scatter(varx, vary, label=message)
+        elif dim == 3:
+            varz = self.select_var(id, message, 'z')
+            self.axes.scatter(varx, vary, varz, label=message)
+        else:
+            print("Incorrect dimension input in dimensional_plot function")
+        
+
     # Draw plot with new checked variables
     def refresh_plot(self, id, checkboxes):
         self.axes.clear()
         self.plot_checked(id, checkboxes)
         self.axes.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         self.draw()
+
+    # Searchbox for messages in dimensional_plot function
+    def search_messages(self, text, ordered_keys):
+        for message in ordered_keys:
+            if text.lower() in message.lower():
+                return message
+            
+    def select_var(self, id, message, axis):
+        v = None
+
+        for var in lp.DATA_DICT[id][message][0]._fields:
+            # Create a selection box for variables
+            varBox = QComboBox(self)
+            varBox.addItem("Select Variable for axis: ", axis)
+            varBox.currentIndexChanged.connect(self.handle_var_selection)
+            
+            def handle_var_selection(index):
+                selected_var = varBox.itemText(index)
+                v = selected_var
+                print("Selected Variable:", selected_var)
+
+        return v
