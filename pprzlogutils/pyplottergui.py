@@ -151,29 +151,44 @@ class pyplottergui(QMainWindow):
         editMenu = self.menubar.addMenu('Messages')
 
         # Better added in groups, so the menu is not too long
-        msg_a_c = editMenu.addMenu('A-C')
-        msg_a_c.setStatusTip('Messages A to C included')
+        msg_a_b = editMenu.addMenu('A-B')
+        msg_a_b.setStatusTip('Messages A to B included')
 
-        msg_d_f = editMenu.addMenu('D-F')
-        msg_d_f.setStatusTip('Messages D to F included')
+        msg_c_d = editMenu.addMenu('C-D')
+        msg_c_d.setStatusTip('Messages C to D included')
 
-        msg_g_i = editMenu.addMenu('G-I')
-        msg_g_i.setStatusTip('Messages G to I included')
+        msg_e_f = editMenu.addMenu('E-F')
+        msg_e_f.setStatusTip('Messages E to F included')
 
-        msg_j_l = editMenu.addMenu('J-L')
-        msg_j_l.setStatusTip('Messages J to L included')
+        msg_g_h = editMenu.addMenu('G-H')
+        msg_g_h.setStatusTip('Messages G to H included')
 
-        msg_m_o = editMenu.addMenu('M-O')
-        msg_m_o.setStatusTip('Messages M to O included')
+        msg_i_j = editMenu.addMenu('I-J')
+        msg_i_j.setStatusTip('Messages I to J included')
 
-        msg_p_r = editMenu.addMenu('P-R')
-        msg_p_r.setStatusTip('Messages P to R included')
+        msg_k_l = editMenu.addMenu('K-L')
+        msg_k_l.setStatusTip('Messages K to L included')
 
-        msg_s_u = editMenu.addMenu('S-U')
-        msg_s_u.setStatusTip('Messages S to U included')
+        msg_m_n = editMenu.addMenu('M-N')
+        msg_m_n.setStatusTip('Messages M to N included')
 
-        msg_v_z = editMenu.addMenu('V-Z')
-        msg_v_z.setStatusTip('Messages V to Z included')
+        msg_o_p = editMenu.addMenu('O-P')
+        msg_o_p.setStatusTip('Messages O to P included')
+
+        msg_q_r = editMenu.addMenu('Q-R')
+        msg_q_r.setStatusTip('Messages Q to R included')
+
+        msg_s_t = editMenu.addMenu('S-T')
+        msg_s_t.setStatusTip('Messages S to T included')
+
+        msg_u_v = editMenu.addMenu('U-V')
+        msg_u_v.setStatusTip('Messages U to V included')
+
+        msg_w_x = editMenu.addMenu('W-X')
+        msg_w_x.setStatusTip('Messages W to X included')
+
+        msg_y_z = editMenu.addMenu('Y-Z')
+        msg_y_z.setStatusTip('Messages Y to Z included')
 
         msg_submenus = []
         ordered_keys = sorted(lp.MESSAGES_TYPES.keys(), key=str.lower) # Alphabetical order
@@ -182,22 +197,32 @@ class pyplottergui(QMainWindow):
             self.checkboxes[message] = {}
 
             # Friendly reminder, -1 is last element
-            if message[0] in 'ABC':
-                msg_submenus.append(msg_a_c.addMenu(message))
-            elif message[0] in 'DEF':
-                msg_submenus.append(msg_d_f.addMenu(message))
-            elif message[0] in 'GHI':
-                msg_submenus.append(msg_g_i.addMenu(message))
-            elif message[0] in 'JKL':
-                msg_submenus.append(msg_j_l.addMenu(message))
-            elif message[0] in 'MNO':
-                msg_submenus.append(msg_m_o.addMenu(message))
-            elif message[0] in 'PQR':
-                msg_submenus.append(msg_p_r.addMenu(message))
-            elif message[0] in 'STU':
-                msg_submenus.append(msg_s_u.addMenu(message))
+            if message[0] in 'AB':
+                msg_submenus.append(msg_a_b.addMenu(message))
+            elif message[0] in 'CD':
+                msg_submenus.append(msg_c_d.addMenu(message))
+            elif message[0] in 'EF':
+                msg_submenus.append(msg_e_f.addMenu(message))
+            elif message[0] in 'GH':
+                msg_submenus.append(msg_g_h.addMenu(message))
+            elif message[0] in 'IJ':
+                msg_submenus.append(msg_i_j.addMenu(message))
+            elif message[0] in 'KL':
+                msg_submenus.append(msg_k_l.addMenu(message))
+            elif message[0] in 'MN':
+                msg_submenus.append(msg_m_n.addMenu(message))
+            elif message[0] in 'OP':
+                msg_submenus.append(msg_o_p.addMenu(message))
+            elif message[0] in 'QR':
+                msg_submenus.append(msg_q_r.addMenu(message))
+            elif message[0] in 'ST':
+                msg_submenus.append(msg_s_t.addMenu(message))
+            elif message[0] in 'UV':
+                msg_submenus.append(msg_u_v.addMenu(message))
+            elif message[0] in 'WX':
+                msg_submenus.append(msg_w_x.addMenu(message))
             else:
-                msg_submenus.append(msg_v_z.addMenu(message))
+                msg_submenus.append(msg_y_z.addMenu(message))
  
             # Add the variables to the submenu as checkboxes
             for var in lp.MESSAGES_TYPES[message]._fields:
@@ -285,8 +310,6 @@ class MplCanvas(FigureCanvas):
 
         super().__init__(fig)
         self.setParent(parent)
-        
-        self.plot_checked()
 
     # Plot a single variable
     def plot_var(self, id, message, var):
