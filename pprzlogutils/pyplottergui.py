@@ -255,6 +255,7 @@ class pyplottergui(QMainWindow):
         self.update()
         self.canvas.refresh_plot(self.current_id, self.checkboxes)
 
+    # Handle showing plot or line based plots
     def points_lines(self):
         if self.canvas.points:
             self.canvas.points = False
@@ -285,30 +286,23 @@ class MplCanvas(FigureCanvas):
         super().__init__(fig)
         self.setParent(parent)
         
-        self.plot_example()
-
-    # Default plot, as an example
-    def plot_example(self):
-        x = [0, 1, 2, 3, 4]
-        y = [0, 1, 4, 9, 16]
-        self.axes.plot(x, y, label='Default plot')
-        self.axes.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-        self.draw()
+        self.plot_checked()
 
     # Plot a single variable
     def plot_var(self, id, message, var):
         v = lp.convert_var_to_numpy(id, message, var)
-        
-        if len(var) == 1: # If var not an array, x axis is time
+
+        if len(v[0]) == 1: # If v not a matrix, x axis is time
             if not self.points:
                 self.axes.plot(v, label=message + ' - ' + var)
             else:
                 self.axes.plot(v, 'o', label=message + ' - ' + var)
-        else: # If var is an array, x axis is the array index # TODO: Fix or remove
+        else: # If var is an array, x axis is the array index
+            print("Using scatter plot because selected variable is an array")
             if not self.points:
-                self.axes.plot(range(len(v)), v, label=message + ' - ' + var)
+                self.axes.scatter(v[0], v[1], label=message + ' - ' + var)
             else:
-                self.axes.plot(range(len(v)), v, 'o', label=message + ' - ' + var)
+                self.axes.scatter(v[0], v[1], marker='o', label=message + ' - ' + var)
 
     # Plot every variable that is checked
     def plot_checked(self, id, checkboxes):
