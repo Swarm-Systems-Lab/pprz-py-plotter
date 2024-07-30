@@ -152,7 +152,8 @@ class pyplottergui(QMainWindow):
         idGroup = QActionGroup(self)
 
         ids = []
-        for id in lp.DATA_DICT.keys():
+        found_ids = sorted(lp.DATA_DICT.keys())
+        for id in found_ids:
             ids.append(QAction('ID ' + str(id), self))
             ids[-1].setCheckable(True)
             ids[-1].setChecked(False)
@@ -340,10 +341,14 @@ class MplCanvas(FigureCanvas):
                 self.axes.plot(v, 'o', label=message + ' - ' + var)
         else: # If var is an array, x axis is the array index
             print("Using scatter plot because selected variable is an array")
-            if not self.points:
-                self.axes.scatter(v[0], v[1], label=message + ' - ' + var)
-            else:
-                self.axes.scatter(v[0], v[1], marker='o', label=message + ' - ' + var)
+
+            v1 = []
+            v2 = []
+            for i in range(len(v)):
+                v1.append(v[i][0])
+                v2.append(v[i][1])
+            
+            self.axes.scatter(v1, v2, label=message + ' - ' + var)
 
     # Plot every variable that is checked
     def plot_checked(self, id, checkboxes):
