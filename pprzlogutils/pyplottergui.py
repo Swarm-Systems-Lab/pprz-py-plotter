@@ -118,6 +118,7 @@ class pyplottergui(QMainWindow):
 
         self.show()
 
+    # TODO: Broken, launch one new window manually
     def open_new_window(self):
         new_window = pyplottergui(self.log_path, self.data_path)
         new_window.show()
@@ -151,6 +152,7 @@ class pyplottergui(QMainWindow):
         editMenu = self.menubar.addMenu('Messages')
 
         # Better added in groups, so the menu is not too long
+        # Recommended to be edited with Copilot!
         msg_a_b = editMenu.addMenu('A-B')
         msg_a_b.setStatusTip('Messages A to B included')
 
