@@ -151,17 +151,21 @@ class pyplottergui(QMainWindow):
         idMenu = self.menubar.addMenu('IDs')
         idGroup = QActionGroup(self)
 
+        ids = []
+        num_id = []
         found_ids = sorted(lp.DATA_DICT.keys())
-        for id in found_ids: # TODO: Fix bug here, only last ID can be selected. May be in handle_id_checkbox func
-            num_id = id # Save number for later
-            id = QAction('ID ' + str(id), self)
-            
-            id.setCheckable(True)
-            id.setChecked(False)
-            id.triggered.connect(lambda: self.handle_id_checkbox(id, num_id))
 
-            idGroup.addAction(id)
-            idMenu.addAction(id)
+        for id in found_ids: 
+            num_id.append(id) # Save number for later
+            ids.append(QAction('ID ' + str(id), self))
+            
+        for i in range(0, len(ids)):
+            ids[i].setCheckable(True)
+            ids[i].setChecked(False)
+            ids[i].triggered.connect(lambda checked, ni=num_id[i]: self.handle_id_checkbox(checked, ni))
+                                     
+            idGroup.addAction(ids[i])
+            idMenu.addAction(ids[i])
     
     '''
         Messages select menu. 
@@ -260,8 +264,8 @@ class pyplottergui(QMainWindow):
     '''
         Lambdas for handling checkboxes
     '''
-    def handle_id_checkbox(self, idcheck, id):
-        if idcheck.isChecked():
+    def handle_id_checkbox(self, idchecked, id):
+        if idchecked:
             self.current_id = id
             print("Current ID selected:", self.current_id)
             
