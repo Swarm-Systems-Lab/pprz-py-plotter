@@ -9,27 +9,26 @@ Date: July 2024
 
 import webbrowser
 import pprzlogutils.logparser as lp
+import pprzlogutils.gui.matplotlib as mpl
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QKeySequence
 from PyQt5.QtWidgets import (
     QAction,
     QActionGroup,
-    QComboBox,
     QHBoxLayout,
-    QLineEdit,
     QMainWindow,
     QPushButton,
     QVBoxLayout,
     QWidget,
 )
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
+#####################################################################
+#####################################################################
+# Main GUI class, using PyQt5
+#####################################################################
+#####################################################################
 
-'''
-    Main GUI class, based on PyQt5
-'''
 class pyplottergui(QMainWindow):
     def __init__(self, log, data):
         super().__init__()
@@ -89,7 +88,7 @@ class pyplottergui(QMainWindow):
         centralWidget = QWidget()
         self.setCentralWidget(centralWidget)
         layout = QVBoxLayout(centralWidget)
-        self.canvas = MplCanvas(self, width=16, height=10, dpi=100)
+        self.canvas = mpl.MplCanvas(self, width=16, height=10, dpi=100)
         layout.addWidget(self.canvas)
 
         # Add 2D position plot
@@ -134,13 +133,13 @@ class pyplottergui(QMainWindow):
 
         self.show()
 
-    # TODO: Broken, launch one new window manually
+    # TODO: Broken, for now launch one new window manually
     def open_new_window(self):
         new_window = pyplottergui(self.log_path, self.data_path)
         new_window.show()
 
     def open_about_url(self):
-        webbrowser.open('https://github.com/Pelochus/pprz-py-plotter')
+        webbrowser.open('https://github.com/Swarm-Systems-Lab/pprz-py-plotter')
 
     '''
         ID select menu
@@ -261,9 +260,15 @@ class pyplottergui(QMainWindow):
                 # Initialize all to false
                 self.checkboxes[message][var] = False
 
-    '''
-        Lambdas for handling checkboxes
-    '''
+
+    #####################################################################
+    #####################################################################
+    # Lambdas
+    #####################################################################
+    #####################################################################
+
+
+    # Handle ID checkbox selection
     def handle_id_checkbox(self, idchecked, id):
         if idchecked:
             self.current_id = id
@@ -283,12 +288,14 @@ class pyplottergui(QMainWindow):
         else:
             pass
 
+    # Handle checkboxes (message/variable menu)
     def handle_checkbox(self, checked, message, var):
         if checked:
             self.checkboxes[message][var] = True
         else:
             self.checkboxes[message][var] = False
-
+    
+    # Clear all checkboxes, interface and data
     def clear_checkboxes(self):
         for message in self.checkboxes.keys():
             for var in self.checkboxes[message]:
@@ -313,100 +320,3 @@ class pyplottergui(QMainWindow):
             self.canvas.points = True
 
         self.canvas.refresh_plot(self.current_id, self.checkboxes)
-
-#####################################################################
-#####################################################################
-# Matplotlib section
-# Related and useful Links:
-# https://matplotlib.org/stable/gallery/index.html
-#####################################################################
-#####################################################################
-
-'''
-    Matplotlib canvas class
-
-    This displays a matplotlib graph on the center of the window
-'''
-class MplCanvas(FigureCanvas):
-    def __init__(self, parent=None, width=16, height=9, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
-        self.points = False
-
-        super().__init__(fig)
-        self.setParent(parent)
-
-    # Plot a single variable
-    def plot_var(self, id, message, var):
-        v = lp.convert_var_to_numpy(id, message, var)
-
-        if len(v[0]) == 1: # If v not a matrix, x axis is time
-            if not self.points:
-                self.axes.plot(v, label=message + ' - ' + var)
-            else:
-                self.axes.plot(v, 'o', label=message + ' - ' + var)
-        else: # If var is an array, x axis is the array index
-            print("Using scatter plot because selected variable is an array")
-
-            v1 = []
-            v2 = []
-            for i in range(len(v)):
-                v1.append(v[i][0])
-                v2.append(v[i][1])
-            
-            self.axes.scatter(v1, v2, label=message + ' - ' + var)
-
-    # Plot every variable that is checked
-    def plot_checked(self, id, checkboxes):
-        for message in checkboxes.keys():
-            for var in checkboxes[message]:
-                if checkboxes[message][var]:
-                    self.plot_var(id, message, var)
-
-    # Plot positions
-    def dimensional_plot(self, dim, id):
-        ordered_keys = sorted(lp.DATA_DICT[id].keys(), key=str.lower) # Alphabetical order
-        searchBox = QLineEdit(self)
-        searchBox.setPlaceholderText("Search for message...")
-        message = searchBox.textChanged.connect(lambda text: self.search_messages(text, ordered_keys))
-
-        varx = self.select_var(id, message, 'x')
-        vary = self.select_var(id, message, 'y')
-
-        if dim == 2:
-            self.axes.scatter(varx, vary, label=message)
-        elif dim == 3:
-            varz = self.select_var(id, message, 'z')
-            self.axes.scatter(varx, vary, varz, label=message)
-        else:
-            print("Incorrect dimension input in dimensional_plot function")
-        
-
-    # Draw plot with new checked variables
-    def refresh_plot(self, id, checkboxes):
-        self.axes.clear()
-        self.plot_checked(id, checkboxes)
-        self.axes.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-        self.draw()
-
-    # Searchbox for messages in dimensional_plot function
-    def search_messages(self, text, ordered_keys):
-        for message in ordered_keys:
-            if text.lower() in message.lower():
-                return message
-            
-    def select_var(self, id, message, axis):
-        v = None
-
-        for var in lp.DATA_DICT[id][message][0]._fields:
-            # Create a selection box for variables
-            varBox = QComboBox(self)
-            varBox.addItem("Select Variable for axis: ", axis)
-            varBox.currentIndexChanged.connect(self.handle_var_selection)
-            
-            def handle_var_selection(index):
-                selected_var = varBox.itemText(index)
-                v = selected_var
-                print("Selected Variable:", selected_var)
-
-        return v
