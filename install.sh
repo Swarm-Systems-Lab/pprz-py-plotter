@@ -25,8 +25,11 @@ install_packages() {
 main() {
     update_system
     install_packages
+
+    git clone https://github.com/Swarm-Systems-Lab/pprz-py-plotter.git
+
     info "Installation completed!"
-    info "Run GUI with ./pprz-py-plotter"
+    info "Change into pprz-py-plotter dir and run GUI with ./pprz-py-plotter"
 }
 
 # Run!

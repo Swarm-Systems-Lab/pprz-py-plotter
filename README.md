@@ -23,6 +23,13 @@ First, install Python and NumPy on your system. If you didn't follow the quick i
 sudo apt install python3-full python3-numpy python3-matplotlib python3-lxml python3-pyqt5 -y
 ```
 
+Then clone the repo:
+
+```bash
+git clone https://github.com/Swarm-Systems-Lab/pprz-py-plotter.git
+cd pprz-py-plotter
+```
+
 Run with (GUI):
 
 ```bash
