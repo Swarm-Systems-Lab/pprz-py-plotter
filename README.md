@@ -7,15 +7,23 @@ New version of Paparazzi's logplotter utility, focused around NumPy.
 ![GUI-Screenshot](https://github.com/Pelochus/pprz-py-plotter/blob/main/img/screenshot.png)
 _Screenshot under KDE Plasma 5, Breeze Dark theme_
 
+## Quick Install (Ubuntu/Debian)
+
+Run the following command:
+
+```bash
+curl https://raw.githubusercontent.com/Swarm-Systems-Lab/pprz-py-plotter/master/install.sh | sudo bash"
+```
+
 ## Usage
 
-First, install Python and NumPy on your system:
+First, install Python and NumPy on your system. If you didn't follow the quick install and are on Ubuntu/Debian based distros:
 
 ```bash
 sudo apt install python3-full python3-numpy python3-matplotlib python3-lxml python3-pyqt5 -y
 ```
 
-Run (GUI):
+Run with (GUI):
 
 ```bash
 ./pprz-py-plotter
@@ -25,7 +33,7 @@ Typical workflow will be as follows:
 
 - Open pprz-py-plotter
 - Select one folder which contains a `.log` file and a `.data` file. If there is more than one it will take the very first 2
-- The program will parse for telemetry and datalink messages 
+- The program will parse for telemetry and datalink messages
 - Inside the program select which ID do you want to see data for
 - Select which variables do you want displayed with checkboxes. This is a little bit cumbersome to do, but works.
 - Refresh the plot and see the data
