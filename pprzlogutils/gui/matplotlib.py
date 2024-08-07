@@ -20,7 +20,6 @@ class MplCanvas(FigureCanvas):
     def __init__(self, parent=None, width=16, height=9, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
-        self.axes.grid(True)
         self.points = False
 
         super().__init__(fig)
@@ -76,7 +75,13 @@ class MplCanvas(FigureCanvas):
     # Draw plot with new checked variables
     def refresh_plot(self, id, checkboxes):
         self.axes.clear()
+
         self.axes.grid(True)
+        self.axes.minorticks_on()
+        self.axes.tick_params(which='both', direction='in', top=True, right=True)
+        self.axes.grid(True, which='both', linewidth=0.4)
+        self.axes.grid(True, which='major', linewidth=1.2)
+
         self.plot_checked(id, checkboxes)
         self.axes.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         self.draw()
