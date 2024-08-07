@@ -4,7 +4,7 @@ Old repo: https://github.com/Pelochus/pprz-py-plotter
 
 New version of Paparazzi's logplotter utility, focused around NumPy.
 
-![GUI-Screenshot](https://github.com/Pelochus/pprz-py-plotter/blob/main/img/screenshot.png)
+![GUI-Screenshot](https://github.com/Swarm-Systems-Lab/pprz-py-plotter/blob/main/img/screenshot.png)
 _Screenshot under KDE Plasma 5, Breeze Dark theme_
 
 ## Quick Install (Ubuntu/Debian)
