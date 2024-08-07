@@ -20,6 +20,7 @@ class MplCanvas(FigureCanvas):
     def __init__(self, parent=None, width=16, height=9, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
+        self.axes.grid(True)
         self.points = False
 
         super().__init__(fig)
@@ -33,7 +34,7 @@ class MplCanvas(FigureCanvas):
             if not self.points:
                 self.axes.plot(v, label=message + ' - ' + var)
             else:
-                self.axes.plot(v, 'o', label=message + ' - ' + var)
+                self.axes.plot(v, 'o', markersize=2, label=message + ' - ' + var)
         else: # If var is an array, x axis is the array index
             print("Using scatter plot because selected variable is an array")
 
@@ -43,7 +44,7 @@ class MplCanvas(FigureCanvas):
                 v1.append(v[i][0])
                 v2.append(v[i][1])
             
-            self.axes.scatter(v1, v2, label=message + ' - ' + var)
+            self.axes.scatter(v1, v2, s=10, label=message + ' - ' + var)
 
     # Plot every variable that is checked
     def plot_checked(self, id, checkboxes):
@@ -75,6 +76,7 @@ class MplCanvas(FigureCanvas):
     # Draw plot with new checked variables
     def refresh_plot(self, id, checkboxes):
         self.axes.clear()
+        self.axes.grid(True)
         self.plot_checked(id, checkboxes)
         self.axes.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         self.draw()
@@ -101,4 +103,4 @@ class MplCanvas(FigureCanvas):
                 print("Selected Variable:", selected_var)
 
         return v
-        '''
+    '''
