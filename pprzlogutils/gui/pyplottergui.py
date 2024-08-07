@@ -59,10 +59,13 @@ class pyplottergui(QMainWindow):
         # File menu
         fileMenu = self.menubar.addMenu('File')
         
+        # TODO: Fix open_new_window, then uncomment this
+        '''
         newWindowAction = QAction('New Window', self)
         newWindowAction.setStatusTip('Open a new window')
         newWindowAction.triggered.connect(self.open_new_window)
         fileMenu.addAction(newWindowAction)
+        '''
 
         exitAction = QAction('Exit', self)
         exitAction.setShortcut('Ctrl+Q')
@@ -91,6 +94,7 @@ class pyplottergui(QMainWindow):
         self.canvas = mpl.MplCanvas(self, width=16, height=10, dpi=100)
         layout.addWidget(self.canvas)
 
+        ''' # TODO: Uncomment when dimensional_plot() is fixed
         # Add 2D position plot
         twoDButton = QPushButton('2D Positions Plot', self)
         twoDButton.setShortcut(QKeySequence(Qt.Key_F2))
@@ -102,6 +106,7 @@ class pyplottergui(QMainWindow):
         threeDButton.setShortcut(QKeySequence(Qt.Key_F3))
         threeDButton.setToolTip('Plot 3D Positions (F3)')
         threeDButton.clicked.connect(lambda: self.canvas.dimensional_plot(3, self.current_id))
+        '''
 
         # Add clear all checks button
         clearButton = QPushButton('Clear Checkboxes', self)
@@ -123,8 +128,8 @@ class pyplottergui(QMainWindow):
 
         # Add to layout
         buttonLayout = QHBoxLayout()
-        buttonLayout.addWidget(twoDButton)
-        buttonLayout.addWidget(threeDButton)
+        # buttonLayout.addWidget(twoDButton)
+        # buttonLayout.addWidget(threeDButton)
         buttonLayout.addStretch(1)
         buttonLayout.addWidget(clearButton)
         buttonLayout.addWidget(refreshButton)
@@ -134,9 +139,11 @@ class pyplottergui(QMainWindow):
         self.show()
 
     # TODO: Broken, for now launch one new window manually
+    '''
     def open_new_window(self):
         new_window = pyplottergui(self.log_path, self.data_path)
         new_window.show()
+    '''
 
     def open_about_url(self):
         webbrowser.open('https://github.com/Swarm-Systems-Lab/pprz-py-plotter')

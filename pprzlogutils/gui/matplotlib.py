@@ -53,6 +53,7 @@ class MplCanvas(FigureCanvas):
                     self.plot_var(id, message, var)
 
     # Plot positions in 2D or 3D # TODO: Fix this function
+    '''
     def dimensional_plot(self, dim, id):
         ordered_keys = sorted(lp.DATA_DICT[id].keys(), key=str.lower) # Alphabetical order
         searchBox = QLineEdit(self)
@@ -69,7 +70,7 @@ class MplCanvas(FigureCanvas):
             self.axes.scatter(varx, vary, varz, label=message)
         else:
             print("Incorrect dimension input in dimensional_plot function")
-        
+    '''
 
     # Draw plot with new checked variables
     def refresh_plot(self, id, checkboxes):
@@ -83,7 +84,8 @@ class MplCanvas(FigureCanvas):
         for message in ordered_keys:
             if text.lower() in message.lower():
                 return message
-            
+
+    ''' # TODO: Fix this function
     def select_var(self, id, message, axis):
         v = None
 
@@ -99,3 +101,4 @@ class MplCanvas(FigureCanvas):
                 print("Selected Variable:", selected_var)
 
         return v
+        '''
