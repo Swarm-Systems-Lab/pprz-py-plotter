@@ -92,7 +92,8 @@ class MplCanvas(FigureCanvas):
             if text.lower() in message.lower():
                 return message
 
-    ''' # TODO: Fix this function
+    # TODO: Fix this function
+    '''
     def select_var(self, id, message, axis):
         v = None
 

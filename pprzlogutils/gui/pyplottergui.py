@@ -16,11 +16,13 @@ from PyQt5.QtGui import QIcon, QKeySequence
 from PyQt5.QtWidgets import (
     QAction,
     QActionGroup,
+    QCheckBox,
     QHBoxLayout,
     QMainWindow,
     QPushButton,
     QVBoxLayout,
     QWidget,
+    QWidgetAction,
 )
 
 #####################################################################
@@ -94,7 +96,8 @@ class pyplottergui(QMainWindow):
         self.canvas = mpl.MplCanvas(self, width=16, height=10, dpi=100)
         layout.addWidget(self.canvas)
 
-        ''' # TODO: Uncomment when dimensional_plot() is fixed
+        # TODO: Uncomment when dimensional_plot() is fixed
+        '''
         # Add 2D position plot
         twoDButton = QPushButton('2D Positions Plot', self)
         twoDButton.setShortcut(QKeySequence(Qt.Key_F2))
@@ -178,47 +181,47 @@ class pyplottergui(QMainWindow):
         Select a message and its variables to plot
     '''
     def messages_menu(self):
-        editMenu = self.menubar.addMenu('Messages')
+        msgMenu = self.menubar.addMenu('Messages')
 
         # Better added in groups, so the menu is not too long
         # Recommended to be edited with Copilot!
-        msg_a_b = editMenu.addMenu('A-B')
+        msg_a_b = msgMenu.addMenu('A-B')
         msg_a_b.setStatusTip('Messages A to B included')
 
-        msg_c_d = editMenu.addMenu('C-D')
+        msg_c_d = msgMenu.addMenu('C-D')
         msg_c_d.setStatusTip('Messages C to D included')
 
-        msg_e_f = editMenu.addMenu('E-F')
+        msg_e_f = msgMenu.addMenu('E-F')
         msg_e_f.setStatusTip('Messages E to F included')
 
-        msg_g_h = editMenu.addMenu('G-H')
+        msg_g_h = msgMenu.addMenu('G-H')
         msg_g_h.setStatusTip('Messages G to H included')
 
-        msg_i_j = editMenu.addMenu('I-J')
+        msg_i_j = msgMenu.addMenu('I-J')
         msg_i_j.setStatusTip('Messages I to J included')
 
-        msg_k_l = editMenu.addMenu('K-L')
+        msg_k_l = msgMenu.addMenu('K-L')
         msg_k_l.setStatusTip('Messages K to L included')
 
-        msg_m_n = editMenu.addMenu('M-N')
+        msg_m_n = msgMenu.addMenu('M-N')
         msg_m_n.setStatusTip('Messages M to N included')
 
-        msg_o_p = editMenu.addMenu('O-P')
+        msg_o_p = msgMenu.addMenu('O-P')
         msg_o_p.setStatusTip('Messages O to P included')
 
-        msg_q_r = editMenu.addMenu('Q-R')
+        msg_q_r = msgMenu.addMenu('Q-R')
         msg_q_r.setStatusTip('Messages Q to R included')
 
-        msg_s_t = editMenu.addMenu('S-T')
+        msg_s_t = msgMenu.addMenu('S-T')
         msg_s_t.setStatusTip('Messages S to T included')
 
-        msg_u_v = editMenu.addMenu('U-V')
+        msg_u_v = msgMenu.addMenu('U-V')
         msg_u_v.setStatusTip('Messages U to V included')
 
-        msg_w_x = editMenu.addMenu('W-X')
+        msg_w_x = msgMenu.addMenu('W-X')
         msg_w_x.setStatusTip('Messages W to X included')
 
-        msg_y_z = editMenu.addMenu('Y-Z')
+        msg_y_z = msgMenu.addMenu('Y-Z')
         msg_y_z.setStatusTip('Messages Y to Z included')
 
         msg_submenus = []
@@ -257,12 +260,11 @@ class pyplottergui(QMainWindow):
  
             # Add the variables to the submenu as checkboxes
             for var in lp.MESSAGES_TYPES[message]._fields:
-                action = QAction(var, self)
-                action.setCheckable(True)
-                action.setChecked(False)
-                
-                action.triggered.connect(lambda checked, m=message, v=var: self.handle_checkbox(checked, m, v))
-                msg_submenus[-1].addAction(action)
+                checkBox = QCheckBox(var, msg_submenus[-1])
+                checkableAction = QWidgetAction(msg_submenus[-1])
+                checkableAction.setDefaultWidget(checkBox)
+                checkBox.stateChanged.connect(lambda state, m=message, v=var: self.handle_checkbox(state, m, v))
+                msg_submenus[-1].addAction(checkableAction)
 
                 # Initialize all to false
                 self.checkboxes[message][var] = False
