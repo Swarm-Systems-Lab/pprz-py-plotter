@@ -85,7 +85,7 @@ def create_structs(messages_type):
             msg_vars = msg.findall('field')
 
             # Create a named tuple for each message
-            fields = ['TIMESTAMP'] # To differentiate from a possible timestamp field inside the message
+            fields = ['TIMESTAMP'] # Caps to differentiate from a possible timestamp field inside the message
             for var in msg_vars:
                 # Fix for some messages with a field named 'class'
                 if var.get('NAME') != 'class':
@@ -160,7 +160,7 @@ def convert_message_to_numpy(id, message):
     Convert a certain variable (say, x position from position messages) to a numpy array
     This will assume float values only
 
-    Returns the numpy array, too
+    Returns the numpy array too
 '''
 def convert_var_to_numpy(id, message, var):
     array = []

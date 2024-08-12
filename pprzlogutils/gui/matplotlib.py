@@ -3,11 +3,6 @@ import pprzlogutils.logparser as lp
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
-from PyQt5.QtWidgets import (
-    QComboBox,
-    QLineEdit,
-)
-
 #####################################################################
 #####################################################################
 # Matplotlib section
@@ -52,26 +47,6 @@ class MplCanvas(FigureCanvas):
                 if checkboxes[message][var]:
                     self.plot_var(id, message, var)
 
-    # Plot positions in 2D or 3D # TODO: Fix this function
-    '''
-    def dimensional_plot(self, dim, id):
-        ordered_keys = sorted(lp.DATA_DICT[id].keys(), key=str.lower) # Alphabetical order
-        searchBox = QLineEdit(self)
-        searchBox.setPlaceholderText("Search for message...")
-        message = searchBox.textChanged.connect(lambda text: self.search_messages(text, ordered_keys))
-
-        varx = self.select_var(id, message, 'x')
-        vary = self.select_var(id, message, 'y')
-
-        if dim == 2:
-            self.axes.scatter(varx, vary, label=message)
-        elif dim == 3:
-            varz = self.select_var(id, message, 'z')
-            self.axes.scatter(varx, vary, varz, label=message)
-        else:
-            print("Incorrect dimension input in dimensional_plot function")
-    '''
-
     # Draw plot with new checked variables
     def refresh_plot(self, id, checkboxes):
         self.axes.clear()
@@ -91,22 +66,3 @@ class MplCanvas(FigureCanvas):
         for message in ordered_keys:
             if text.lower() in message.lower():
                 return message
-
-    # TODO: Fix this function
-    '''
-    def select_var(self, id, message, axis):
-        v = None
-
-        for var in lp.DATA_DICT[id][message][0]._fields:
-            # Create a selection box for variables
-            varBox = QComboBox(self)
-            varBox.addItem("Select Variable for axis: ", axis)
-            varBox.currentIndexChanged.connect(self.handle_var_selection)
-            
-            def handle_var_selection(index):
-                selected_var = varBox.itemText(index)
-                v = selected_var
-                print("Selected Variable:", selected_var)
-
-        return v
-    '''

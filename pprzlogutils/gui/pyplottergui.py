@@ -96,21 +96,6 @@ class pyplottergui(QMainWindow):
         self.canvas = mpl.MplCanvas(self, width=16, height=10, dpi=100)
         layout.addWidget(self.canvas)
 
-        # TODO: Uncomment when dimensional_plot() is fixed
-        '''
-        # Add 2D position plot
-        twoDButton = QPushButton('2D Positions Plot', self)
-        twoDButton.setShortcut(QKeySequence(Qt.Key_F2))
-        twoDButton.setToolTip('Plot 2D positions (F2)')
-        twoDButton.clicked.connect(lambda: self.canvas.dimensional_plot(2, self.current_id))
-
-        # Add 3D position plot
-        threeDButton = QPushButton('3D Positions Plot', self)
-        threeDButton.setShortcut(QKeySequence(Qt.Key_F3))
-        threeDButton.setToolTip('Plot 3D Positions (F3)')
-        threeDButton.clicked.connect(lambda: self.canvas.dimensional_plot(3, self.current_id))
-        '''
-
         # Add clear all checks button
         clearButton = QPushButton('Clear Checkboxes', self)
         clearButton.setShortcut(QKeySequence(Qt.Key_F4))
