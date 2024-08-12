@@ -301,8 +301,9 @@ class pyplottergui(QMainWindow):
                 for submenu in action.menu().actions(): # A-B, C-D... submenus
                     for subaction in submenu.menu().actions(): # Messages names submenu
                         for checkbox in subaction.menu().actions(): # Actual checkbox
-                            if isinstance(checkbox, QAction):
-                                checkbox.setChecked(False)
+                            if isinstance(checkbox, QWidgetAction):
+                                checkbox.defaultWidget().setChecked(False)
+                                
         self.update()
         self.canvas.refresh_plot(self.current_id, self.checkboxes)
 
