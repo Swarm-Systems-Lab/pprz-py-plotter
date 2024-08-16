@@ -8,6 +8,8 @@ Recommended to read the provided pprzlogutils library documentation for more inf
 This file is a CLI example, the recommended way is to use the GUI
 
 Author: Pelochus
+Date: July 2024
+More info: https://github.com/Swarm-Systems-Lab/pprz-py-plotter
 """
 
 import argparse

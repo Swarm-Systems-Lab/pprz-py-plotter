@@ -116,8 +116,6 @@ class pyplottergui(QMainWindow):
 
         # Add to layout
         buttonLayout = QHBoxLayout()
-        # buttonLayout.addWidget(twoDButton)
-        # buttonLayout.addWidget(threeDButton)
         buttonLayout.addStretch(1)
         buttonLayout.addWidget(clearButton)
         buttonLayout.addWidget(refreshButton)
@@ -215,7 +213,6 @@ class pyplottergui(QMainWindow):
             # Create inner dict
             self.checkboxes[message] = {}
 
-            # Friendly reminder, -1 is last element
             if message[0] in 'AB':
                 msg_submenus.append(msg_a_b.addMenu(message))
             elif message[0] in 'CD':
@@ -249,10 +246,9 @@ class pyplottergui(QMainWindow):
                 checkableAction = QWidgetAction(msg_submenus[-1])
                 checkableAction.setDefaultWidget(checkBox)
                 checkBox.stateChanged.connect(lambda state, m=message, v=var: self.handle_checkbox(state, m, v))
+                
                 msg_submenus[-1].addAction(checkableAction)
-
-                # Initialize all to false
-                self.checkboxes[message][var] = False
+                self.checkboxes[message][var] = False # Initialize all to false
 
 
     #####################################################################
@@ -265,9 +261,7 @@ class pyplottergui(QMainWindow):
     # Handle ID checkbox selection
     def handle_id_checkbox(self, idchecked, id):
         if idchecked:
-            self.current_id = id
-            print("Current ID selected:", self.current_id)
-            
+            self.current_id = id            
             for msg_name in lp.DATA_DICT[self.current_id].keys():
                 for submenu in self.menubar.actions():
                     if submenu.text() == 'Messages':
@@ -276,7 +270,7 @@ class pyplottergui(QMainWindow):
                                 if isinstance(subaction, QAction):
                                     if subaction.text() == msg_name:
                                         font = subaction.font()
-                                        font.setUnderline(True)
+                                        font.setUnderline(True) # Underline messages available for that ID
                                         subaction.setFont(font)
             self.update()
         else:
@@ -291,6 +285,7 @@ class pyplottergui(QMainWindow):
     
     # Clear all checkboxes, interface and data
     def clear_checkboxes(self):
+        # Clear boolean array
         for message in self.checkboxes.keys():
             for var in self.checkboxes[message]:
                 self.checkboxes[message][var] = False

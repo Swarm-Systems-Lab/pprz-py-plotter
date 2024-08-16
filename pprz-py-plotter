@@ -7,6 +7,7 @@ Recommended to read the provided pprzlogutils library documentation for more inf
 
 Author: Pelochus
 Date: July 2024
+More info: https://github.com/Swarm-Systems-Lab/pprz-py-plotter
 """
 
 import sys

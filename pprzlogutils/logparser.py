@@ -151,10 +151,18 @@ def parse_datafile(datafile, verbose=False):
     Convert a certain message (for example, position messages) to a numpy array
     Only for a certain ID. Convert the array of messages
     This will assume float values only
+
+    Returns the numpy arrays returned by var_to_numpy in a single numpy array
 '''
 def convert_message_to_numpy(id, message):
+    array = []
+
     for var in MESSAGES_TYPES[message]._fields:
-        convert_var_to_numpy(id, message, var)
+        array.append(convert_var_to_numpy(id, message, var))
+
+    nparray = numpy.array(array)
+
+    return nparray
 
 '''
     Convert a certain variable (say, x position from position messages) to a numpy array
@@ -179,7 +187,6 @@ def convert_var_to_numpy(id, message, var):
 
     message_dir = OUTPUT_DIR + '/' + message
     os.makedirs(message_dir, exist_ok=True)
-    
     filename = os.path.join(message_dir, var + '.npy')
     numpy.savetxt(filename, nparray) # Save to txt for later processing
 

@@ -1,3 +1,12 @@
+"""
+pprzlogutils - A Python library for parsing and processing Paparazzi UAV log files.
+
+matplotlib provides the graphing GUI for the application based in Qt5.
+
+Author: Pelochus
+Date: July 2024
+"""
+
 import pprzlogutils.logparser as lp
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
