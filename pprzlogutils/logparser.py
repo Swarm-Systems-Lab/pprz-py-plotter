@@ -155,14 +155,8 @@ def parse_datafile(datafile, verbose=False):
     Returns the numpy arrays returned by var_to_numpy in a single numpy array
 '''
 def convert_message_to_numpy(id, message):
-    array = []
-
     for var in MESSAGES_TYPES[message]._fields:
-        array.append(convert_var_to_numpy(id, message, var))
-
-    nparray = numpy.array(array)
-
-    return nparray
+        convert_var_to_numpy(id, message, var)
 
 '''
     Convert a certain variable (say, x position from position messages) to a numpy array
