@@ -72,6 +72,19 @@ output
 
 Where every file is a variable inside the message, plus the `TIMESTAMP` variable extracted from the `.data` file.
 
+### Use of .npy files
+
+To use `.npy` files output by the CLI version:
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+var = np.loadtxt("ins_x.npy")
+plt.plot(var)
+plt.show()
+```
+
 ## Repo structure
 
 This repository directory structure is as follows:
