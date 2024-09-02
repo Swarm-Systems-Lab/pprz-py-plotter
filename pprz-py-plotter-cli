@@ -22,6 +22,18 @@ import pprzlogutils.logparser as lp
 UAV_ID = 204 # Only ID in the sample log/data files
 MESSAGE = "INS"
 
+def select_id():
+    print("NOTE: Available UAV_IDs listed below")
+    print(lp.DATA_DICT.keys())
+    global UAV_ID
+    UAV_ID = int(input("Enter UAV ID from the list above: "))
+
+def select_message():
+    print("NOTE: Available messages for UAV_ID %d listed below" % UAV_ID)
+    print(lp.DATA_DICT[UAV_ID].keys())
+    global MESSAGE
+    MESSAGE = input("Enter message name from the list above: ")
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="pprz-py-plotter")
     parser.add_argument('datafile', help="Paparazzi's log .data file")
@@ -50,5 +62,7 @@ if __name__ == '__main__':
     # Convert datafile to numpy arrays
     with open(args.datafile, 'r', encoding='utf-8') as datafile:
         lp.parse_datafile(datafile)
+        select_id()
+        select_message()
         print("Using UAV_ID: %d, and MESSAGE: %s" % (UAV_ID, MESSAGE))
         lp.convert_message_to_numpy(UAV_ID, MESSAGE)
