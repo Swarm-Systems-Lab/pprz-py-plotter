@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+
+"""
+pprz-py-plotter - Plotting Paparazzi log and data files with Python, NumPy and Matplotlib
+
+Run (without modifications to the original file):
+
+./pprz-py-plotter-cli ./logs/sample.data ./logs/sample.log
+
+and then run this file:
+
+./matplotlib-example
+
+This will plot the ins_x var found in INS message from the sample log/data files
+
+Author: Pelochus
+Date: September 2024
+More info: https://github.com/Swarm-Systems-Lab/pprz-py-plotter
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+var = np.loadtxt("output/INS/ins_x.npy")
+
+plt.plot(var)
+plt.show()

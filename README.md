@@ -70,7 +70,8 @@ output
     └── TIMESTAMP.npy
 ```
 
-Where every file is a variable inside the message, plus the `TIMESTAMP` variable extracted from the `.data` file.
+Where every file is a variable inside the message, plus the `TIMESTAMP` variable.
+The `TIMESTAMP` variable **is NOT** part of the messages, it is extracted from the actual timestamp recorded by Paparazzi written into the `.data` file.
 
 ### Use of .npy files
 
@@ -84,6 +85,8 @@ var = np.loadtxt("ins_x.npy")
 plt.plot(var)
 plt.show()
 ```
+
+You can also use the provided `matplotlib-example` file (instructions at the beginning of the file).
 
 ## Repo structure
 
