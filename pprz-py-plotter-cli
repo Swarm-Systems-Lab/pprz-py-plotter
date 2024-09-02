@@ -18,6 +18,7 @@ import os
 import pprzlogutils.logparser as lp
 
 # Constants
+# NOTE: Change these values to the desired UAV_ID and MESSAGE
 UAV_ID = 204 # Only ID in the sample log/data files
 MESSAGE = "GVF"
 
@@ -40,7 +41,7 @@ if __name__ == '__main__':
             for n in lp.MESSAGES_TYPES:
                 print(n, lp.MESSAGES_TYPES[n])
 
-        # Usage example
+        # Message var reading example
         '''
             b = lp.MESSAGES_TYPES["PONG"](1)
             print(b, b.TIMESTAMP)
