@@ -18,8 +18,7 @@ import os
 import pprzlogutils.logparser as lp
 
 # Constants
-# NOTE: Change these values to the desired UAV_ID and MESSAGE
-UAV_ID = 204 # Only ID in the sample log/data files
+UAV_ID = 204
 MESSAGE = "INS"
 
 def select_id():

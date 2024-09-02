@@ -53,6 +53,7 @@ Run (CLI):
 
 By default, this will convert the data to a NumPy array format, in a plain text file `.npy` file.
 Results will be saved in the `output` folder, in folders, one with each message.
+While running the CLI, you must enter manually which ID and message you want. The available messages and IDs will be listed.
 For example, we want to extract the `INS` message from the example log, results will be like this:
 
 ```bash
